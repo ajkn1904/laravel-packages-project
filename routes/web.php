@@ -69,13 +69,13 @@ Route::middleware(['checkLogin'])->group(function () {
     Route::get('/success', [ProductController::class, 'success'])->name('success');
 
 
-    Auth::routes();
+    //Auth::routes();
     //subscription
-    Route::middleware("auth")->group(function () {
+    /* Route::middleware("auth")->group(function () { */
         Route::get('plans', [PlanController::class, 'index']);
         Route::get('plans/{plan}', [PlanController::class, 'show'])->name("plans.show");
         Route::post('subscription', [PlanController::class, 'subscription'])->name("subscription.create");
-    });
+    //});
 
 });
 

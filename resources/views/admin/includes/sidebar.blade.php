@@ -91,7 +91,7 @@
                 <h6 class="collapse-header">Login Screens:</h6>
                 <a class="collapse-item" href="{{ url('excel') }}">Excel</a>
                 <a class="collapse-item" href="{{ url('/checkout') }}">Shop</a>
-                <a class="collapse-item" href="{{ url('') }}">Subscription</a>
+                <a class="collapse-item" href="{{ url('/plans') }}">Subscription</a>
 
             </div>
         </div>
