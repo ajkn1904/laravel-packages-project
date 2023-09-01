@@ -160,7 +160,7 @@ class AuthController extends Controller
       }
       public function loginWithGoogleRedirect()
       {
-          $googleUser = Socialite::driver('google')->user();
+          $googleUser = Socialite::driver('google')->stateless()->user();
           $this ->_registerOrLoginUser($googleUser);
   
           return redirect('admin/dashboard');
@@ -176,7 +176,7 @@ class AuthController extends Controller
     }
     public function loginWithFacebookRedirect()
     {
-        $facebookUser = Socialite::driver('facebook')->user();
+        $facebookUser = Socialite::driver('facebook')->stateless()->user();
         $this ->_registerOrLoginUser($facebookUser);
         return redirect('admin/dashboard');
     }
@@ -189,7 +189,7 @@ class AuthController extends Controller
         }
         public function loginWithLinkedinRedirect()
         {
-            $linkedinUser = Socialite::driver('linkedin')->user();
+            $linkedinUser = Socialite::driver('linkedin')->stateless()->user();
             $this ->_registerOrLoginUser($linkedinUser);
             return redirect('admin/dashboard');
         }
