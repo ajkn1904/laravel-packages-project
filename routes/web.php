@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminLayoutController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WebsiteController;
 use Illuminate\Support\Facades\Route;
@@ -57,6 +58,16 @@ Route::middleware(['checkLogin'])->group(function () {
     Route::get('/export-user', [UserController::class, 'exportUser'])->name('export-user');
 
     Route::post('/import-user', [UserController::class, 'importUser'])->name('import-user');
+
+
+    //single payment
+    Route::get('/checkout', [ProductController::class, 'checkout'])->name('checkout');
+    
+    Route::post('/session', [ProductController::class, 'session'])->name('session');
+    Route::get('/success', [ProductController::class, 'success'])->name('success');
+
+
+
 });
 
 

@@ -90,7 +90,7 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Login Screens:</h6>
                 <a class="collapse-item" href="{{ url('excel') }}">Excel</a>
-                <a class="collapse-item" href="{{ url('') }}">Shop</a>
+                <a class="collapse-item" href="{{ url('/checkout') }}">Shop</a>
                 <a class="collapse-item" href="{{ url('') }}">Subscription</a>
 
             </div>

@@ -54,5 +54,6 @@ return [
     //stripe payment
     'stripe' => [
         'key' => env('STRIPE_KEY'),
+        'sk' => env('STRIPE_SECRET'),
     ],
 ];
