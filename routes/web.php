@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\AdminLayoutController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WebsiteController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -62,11 +64,18 @@ Route::middleware(['checkLogin'])->group(function () {
 
     //single payment
     Route::get('/checkout', [ProductController::class, 'checkout'])->name('checkout');
-    
+
     Route::post('/session', [ProductController::class, 'session'])->name('session');
     Route::get('/success', [ProductController::class, 'success'])->name('success');
 
 
+    Auth::routes();
+    //subscription
+    Route::middleware("auth")->group(function () {
+        Route::get('plans', [PlanController::class, 'index']);
+        Route::get('plans/{plan}', [PlanController::class, 'show'])->name("plans.show");
+        Route::post('subscription', [PlanController::class, 'subscription'])->name("subscription.create");
+    });
 
 });
 
