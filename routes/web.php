@@ -22,38 +22,52 @@ Route::get('/', function () {
 });
 
 
-Route::get('/',[WebsiteController::class, 'home']);
-Route::get('/about',[WebsiteController::class, 'about']);
-Route::get('/contact',[WebsiteController::class, 'contact']);
-Route::get('/services',[WebsiteController::class, 'services']);
+Route::get('/', [WebsiteController::class, 'home']);
+Route::get('/about', [WebsiteController::class, 'about']);
+Route::get('/contact', [WebsiteController::class, 'contact']);
+Route::get('/services', [WebsiteController::class, 'services']);
 
 
-Route::get('/login',[AuthController::class, 'login']);
-Route::post('/user-login',[AuthController::class, 'userLogin']);
+Route::get('/login', [AuthController::class, 'login']);
+Route::post('/user-login', [AuthController::class, 'userLogin']);
 
-Route::get('/teacher-register',[AuthController::class, 'teacherRegister']);
-Route::post('/teacher-regristration',[AuthController::class, 'registrationTeacher']);
+Route::get('/teacher-register', [AuthController::class, 'teacherRegister']);
+Route::post('/teacher-registration', [AuthController::class, 'registrationTeacher']);
 
-Route::get('/student-register',[AuthController::class, 'studentRegister']);
-Route::post('/student-regristration',[AuthController::class, 'registrationStudent']);
+Route::get('/student-register', [AuthController::class, 'studentRegister']);
+Route::post('/student-registration', [AuthController::class, 'registrationStudent']);
 
-
-
-//maatwebsite/excel
-Route::get('excel', function () {
-    return view('importFile');
-});
-Route::get('/export-user', [UserController::class, 'exportUser'])->name('export-user');
-
-Route::post('/import-user', [UserController::class, 'importUser'])->name('import-user');
 
 
 
 //authentication & authorization
 Route::middleware(['checkLogin'])->group(function () {
-    
-    Route::get('admin/dashboard',[AdminLayoutController::class, 'dashboard']);
-    Route::get('admin/tables',[AdminLayoutController::class, 'tables']);
-    Route::get('admin/logout',[AuthController::class, 'logout']);
 
+    Route::get('admin/dashboard', [AdminLayoutController::class, 'dashboard']);
+    Route::get('my/dashboard', [AdminLayoutController::class, 'dashboard']);
+    Route::get('admin/tables', [AdminLayoutController::class, 'tables']);
+    Route::get('admin/logout', [AuthController::class, 'logout']);
+
+
+
+    //maatwebsite/excel
+    Route::get('excel', function () {
+        return view('importFile');
+    });
+    Route::get('/export-user', [UserController::class, 'exportUser'])->name('export-user');
+
+    Route::post('/import-user', [UserController::class, 'importUser'])->name('import-user');
 });
+
+
+//login with google
+Route::get('/google/login', [AuthController::class, 'loginWithGoogle']);
+Route::get('admin/google/login/redirect', [AuthController::class, 'loginWithGoogleRedirect']);
+
+//login with facebook
+Route::get('/facebook/login', [AuthController::class, 'loginWithFacebook']);
+Route::get('admin/facebook/login/redirect', [AuthController::class, 'loginWithFacebookRedirect']);
+
+//login with Linkedin
+Route::get('/linkedin/login', [AuthController::class, 'loginWithLinkedin']);
+Route::get('admin/linkedin/login/redirect', [AuthController::class, 'loginWithLinkedinRedirect']);

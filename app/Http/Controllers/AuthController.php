@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AuthUsers;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
 use Session;
 
 class AuthController extends Controller
@@ -16,9 +18,10 @@ class AuthController extends Controller
       
         $email = $req->email;
         $password = md5($req->password);
-        $user = AuthUsers::where('email', '=', $email)
+        $user = User::where('email', '=', $email)
             ->where('password', '=', $password)
             ->first();
+            //dd($email, $password);
             if($user){
                 // check if user is approved (check value of status coloumn is 1)
 
@@ -52,12 +55,12 @@ class AuthController extends Controller
     public function registrationTeacher(Request $req){
         if($req->password == $req->conf_password){
             // Check if the submitted email is already in the User table or databse
-              $user_exists =  AuthUsers::where('email', '=', $req->email)->first();
+              $user_exists =  User::where('email', '=', $req->email)->first();
               if($user_exists){
                 return redirect()->back()->with('error', 'Email Already Exists!');
               }
               else{
-                $user = new AuthUsers();
+                $user = new User();
                 $user->first_name = $req->first_name;
                 $user->last_name = $req->last_name;
                 $user->email = $req->email;
@@ -82,12 +85,12 @@ class AuthController extends Controller
     public function registrationStudent(Request $req){
         if($req->password == $req->conf_password){
             // Check if the submitted email is already in the User table or database
-              $user_exists =  AuthUsers::where('email', '=', $req->email)->first();
+              $user_exists =  User::where('email', '=', $req->email)->first();
               if($user_exists){
                 return redirect()->back()->with('error', 'Email Already Exists!');
               }
               else{
-                $user = new AuthUsers();
+                $user = new User();
                 $user->first_name = $req->first_name;
                 $user->last_name = $req->last_name;
                 $user->email = $req->email;
@@ -113,4 +116,82 @@ class AuthController extends Controller
         $request->session()->forget(['user_fname', 'user_lname', 'user_email', 'user_role']);
         return redirect('/login');
     }
+
+
+
+    //register or login with provider
+    protected function _registerOrLoginUser($data)
+    {
+        //dd($data);
+        $user = User::where('email', '=', $data->email)->first();
+        if($user) {
+            Session::put('user_email', $user->email);
+            Session::put('user_fname', $user->first_name);
+            Session::put('user_role', 'Student');
+            Auth::login($user, true);
+            return redirect('/my/dashboard')->with('success', 'Login successful');;
+            //return redirect()->back()->with('error', 'Email Already Exists!');
+        } else {
+
+            $user = new User();
+            $user->first_name = $data->name;
+            $user->email = $data->email;
+            $user->provider_id = $data->id;
+            $user->role = 'Student';
+            $user->status = 1;
+            if($user->save()) {
+                Session::put('user_email', $data->email);
+                Session::put('user_fname', $data->name);
+                Session::put('user_role', 'Student');
+                Auth::login($user, true);
+                return redirect('/my/dashboard')->with('success', 'User Registered.');
+                //return redirect()->back()->with('success', 'User Registered. Waiting for Admin Approval');
+            }
+
+        }
+
+    }
+
+
+      //login with google
+      public function loginWithGoogle()
+      {
+          return Socialite::driver('google')->redirect('admin/dashboard');
+      }
+      public function loginWithGoogleRedirect()
+      {
+          $googleUser = Socialite::driver('google')->user();
+          $this ->_registerOrLoginUser($googleUser);
+  
+          return redirect('admin/dashboard');
+      }
+
+      
+      
+
+    //login with facebook
+    public function loginWithFacebook()
+    {   
+        return Socialite::driver('facebook')->redirect();
+    }
+    public function loginWithFacebookRedirect()
+    {
+        $facebookUser = Socialite::driver('facebook')->user();
+        $this ->_registerOrLoginUser($facebookUser);
+        return redirect('admin/dashboard');
+    }
+
+
+        //login with linkedin
+        public function loginWithLinkedin()
+        {
+            return Socialite::driver('linkedin')->redirect();
+        }
+        public function loginWithLinkedinRedirect()
+        {
+            $linkedinUser = Socialite::driver('linkedin')->user();
+            $this ->_registerOrLoginUser($linkedinUser);
+            return redirect('admin/dashboard');
+        }
+
 }

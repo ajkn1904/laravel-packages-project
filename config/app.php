@@ -169,8 +169,13 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        //laravel maatwebsite/excel
        Maatwebsite\Excel\ExcelServiceProvider::class,
 
+       //laravel socialite
+       Laravel\Socialite\SocialiteServiceProvider::class,
+
+       
         
     ])->toArray(),
 
@@ -189,6 +194,9 @@ return [
         // 'Example' => App\Facades\Example::class,
        'Excel' => Maatwebsite\Excel\Facades\Excel::class, 
 
+
+       //laravel socialite 
+       'Socialite' => Laravel\Socialite\Facades\Socialite::class,
       
     ])->toArray(),
 
